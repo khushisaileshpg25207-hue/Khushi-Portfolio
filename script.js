@@ -1,14 +1,107 @@
 /**
  * Khushi Thakkar - E-Portfolio Script
- * Handles: Navbar scroll, reveal animations, mobile menu
+ * Handles: Navbar scroll, reveal animations, mobile menu, certificate PDF viewer
  */
 
+/* ====================================================
+   CERTIFICATE PDF OPENING FUNCTION (Global Scope)
+   ==================================================== */
+var CERT_BASE_PATH = "assets/certificates/Certificates/";
+
+function openCertificate(filename, title) {
+    var pdfPath = CERT_BASE_PATH + filename;
+
+    // Try the modal viewer first
+    var modal = document.getElementById("pdfModal");
+    var modalTitle = document.getElementById("pdfModalTitle");
+    var pdfViewer = document.getElementById("pdfViewer");
+    var downloadLink = document.getElementById("pdfDownloadLink");
+    var fallback = document.getElementById("pdfFallback");
+    var fallbackLink = document.getElementById("pdfFallbackLink");
+    var fallbackDownload = document.getElementById("pdfFallbackDownload");
+
+    if (modal && pdfViewer) {
+        // Set title
+        if (modalTitle) modalTitle.textContent = title || "Certificate";
+
+        // Set download link
+        if (downloadLink) {
+            downloadLink.href = pdfPath;
+            downloadLink.download = filename;
+        }
+
+        // Set fallback links
+        if (fallbackLink) fallbackLink.href = pdfPath;
+        if (fallbackDownload) {
+            fallbackDownload.href = pdfPath;
+            fallbackDownload.download = filename;
+        }
+
+        // Check if we're on file:// protocol (where iframes for PDFs often don't work)
+        var isFileProtocol = window.location.protocol === "file:";
+
+        if (isFileProtocol) {
+            // On file:// protocol, open the PDF directly in a new tab
+            // because iframes cannot load file:// PDFs in most browsers
+            window.open(pdfPath, "_blank");
+            return;
+        }
+
+        // On http/https, show the modal with iframe
+        pdfViewer.src = pdfPath;
+        if (fallback) fallback.style.display = "none";
+        pdfViewer.style.display = "block";
+
+        // Show modal
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        // If iframe fails to load, show fallback after a timeout
+        var iframeLoadTimeout = setTimeout(function () {
+            pdfViewer.style.display = "none";
+            if (fallback) fallback.style.display = "flex";
+        }, 5000);
+
+        pdfViewer.onload = function () {
+            clearTimeout(iframeLoadTimeout);
+        };
+
+        pdfViewer.onerror = function () {
+            clearTimeout(iframeLoadTimeout);
+            pdfViewer.style.display = "none";
+            if (fallback) fallback.style.display = "flex";
+        };
+
+        return;
+    }
+
+    // Ultimate fallback: just open in a new tab
+    window.open(pdfPath, "_blank");
+}
+
+function closePdfModal() {
+    var modal = document.getElementById("pdfModal");
+    var pdfViewer = document.getElementById("pdfViewer");
+
+    if (modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+    if (pdfViewer) {
+        pdfViewer.src = "";
+    }
+}
+
+/* ====================================================
+   MAIN INITIALIZATION (DOMContentLoaded)
+   ==================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
     // ===== 1. NAVBAR SCROLL EFFECT =====
     var navbar = document.getElementById("navbar");
 
     function handleScroll() {
+        if (!navbar) return;
         if (window.scrollY > 50) {
             navbar.classList.add("scrolled");
         } else {
@@ -17,14 +110,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.addEventListener("scroll", handleScroll);
-    // Run once on load in case page is already scrolled
     handleScroll();
 
 
     // ===== 2. REVEAL ON SCROLL ANIMATION =====
     var revealElements = document.querySelectorAll(".reveal");
 
-    // Check if IntersectionObserver is supported
     if ("IntersectionObserver" in window) {
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
@@ -42,13 +133,13 @@ document.addEventListener("DOMContentLoaded", function () {
             observer.observe(el);
         });
     } else {
-        // Fallback: if IntersectionObserver not supported, show everything
+        // Fallback: show everything immediately
         revealElements.forEach(function (el) {
             el.classList.add("active");
         });
     }
 
-    // Make hero visible immediately with a slight delay for entrance effect
+    // Make hero visible immediately
     var hero = document.getElementById("hero");
     if (hero) {
         setTimeout(function () {
@@ -63,22 +154,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var overlay = document.getElementById("mobileMenuOverlay");
 
     function openMenu() {
-        hamburger.classList.add("active");
-        navLinks.classList.add("active");
-        overlay.classList.add("active");
+        if (hamburger) hamburger.classList.add("active");
+        if (navLinks) navLinks.classList.add("active");
+        if (overlay) overlay.classList.add("active");
         document.body.style.overflow = "hidden";
     }
 
     function closeMenu() {
-        hamburger.classList.remove("active");
-        navLinks.classList.remove("active");
-        overlay.classList.remove("active");
+        if (hamburger) hamburger.classList.remove("active");
+        if (navLinks) navLinks.classList.remove("active");
+        if (overlay) overlay.classList.remove("active");
         document.body.style.overflow = "";
     }
 
     if (hamburger) {
         hamburger.addEventListener("click", function () {
-            if (navLinks.classList.contains("active")) {
+            if (navLinks && navLinks.classList.contains("active")) {
                 closeMenu();
             } else {
                 openMenu();
@@ -86,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Close menu when a nav link is clicked
     var allNavLinks = document.querySelectorAll(".nav-link");
     allNavLinks.forEach(function (link) {
         link.addEventListener("click", function () {
@@ -94,22 +184,38 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Close menu when overlay is clicked
     if (overlay) {
         overlay.addEventListener("click", function () {
             closeMenu();
         });
     }
 
-    // Close menu on Escape key
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
             closeMenu();
+            closePdfModal();
         }
     });
 
 
-    // ===== 4. SMOOTH SCROLL FOR ANCHOR LINKS =====
+    // ===== 4. PDF MODAL CLOSE HANDLERS =====
+    var pdfModalClose = document.getElementById("pdfModalClose");
+    var pdfModalBackdrop = document.getElementById("pdfModalBackdrop");
+
+    if (pdfModalClose) {
+        pdfModalClose.addEventListener("click", function () {
+            closePdfModal();
+        });
+    }
+
+    if (pdfModalBackdrop) {
+        pdfModalBackdrop.addEventListener("click", function () {
+            closePdfModal();
+        });
+    }
+
+
+    // ===== 5. SMOOTH SCROLL FOR ANCHOR LINKS =====
     var anchorLinks = document.querySelectorAll('a[href^="#"]');
     anchorLinks.forEach(function (link) {
         link.addEventListener("click", function (e) {
@@ -119,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var targetElement = document.querySelector(targetId);
             if (targetElement) {
                 e.preventDefault();
-                var navHeight = navbar.offsetHeight;
+                var navHeight = navbar ? navbar.offsetHeight : 0;
                 var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
 
                 window.scrollTo({
