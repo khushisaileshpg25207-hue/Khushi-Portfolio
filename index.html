@@ -18,6 +18,29 @@
         <div class="glow glow-3"></div>
     </div>
 
+    <!-- PDF Viewer Modal -->
+    <div class="pdf-modal" id="pdfModal">
+        <div class="pdf-modal-backdrop" id="pdfModalBackdrop"></div>
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3 id="pdfModalTitle">Certificate</h3>
+                <div class="pdf-modal-actions">
+                    <a id="pdfDownloadLink" href="#" download class="btn btn-primary btn-sm">Download PDF</a>
+                    <button class="pdf-modal-close" id="pdfModalClose">&times;</button>
+                </div>
+            </div>
+            <div class="pdf-modal-body">
+                <iframe id="pdfViewer" src="" title="Certificate PDF Viewer"></iframe>
+                <div class="pdf-fallback" id="pdfFallback" style="display:none;">
+                    <div class="pdf-fallback-icon">📄</div>
+                    <p>Your browser cannot display this PDF inline.</p>
+                    <a id="pdfFallbackLink" href="#" class="btn btn-primary">Open PDF Directly</a>
+                    <a id="pdfFallbackDownload" href="#" download class="btn btn-secondary">Download PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
@@ -181,97 +204,85 @@
                     <div class="cert-section">
                         <h3 class="section-title">Original Certificates</h3>
                         <div class="cert-gallery">
-                            <a href="assets/certificates/Certificates/Official_Certification_Issued_Six_Sigma_White_Belt_Certification%20(1).pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📜</div>
-                                    <h4>Six Sigma White Belt</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Coursera%20Business%20Analysis.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📊</div>
-                                    <h4>Business Analysis</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Bloomberg.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">💹</div>
-                                    <h4>Bloomberg Concepts</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Canva.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🎨</div>
-                                    <h4>Canva Graphic Design</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/IIT%20Kharagpur.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🏛️</div>
-                                    <h4>IIT Kharagpur Workshop</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Inventory%20Management.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📦</div>
-                                    <h4>Inventory Management</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Procurement%20management.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🔗</div>
-                                    <h4>Procurement Management</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/MS%20Excel%20Beggining.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📗</div>
-                                    <h4>MS Excel Basics</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/MA%20Excel.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📘</div>
-                                    <h4>Advanced MS Excel</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Supply%20chain%20Conclave%20%20(1).pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🚛</div>
-                                    <h4>Supply Chain Conclave</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Case%20study%20ssc%20club.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">📝</div>
-                                    <h4>SSC Club Case Study</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/Verbinden%20.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🤝</div>
-                                    <h4>Verbinden Volunteer</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
-                            <a href="assets/certificates/Certificates/advent%20event.pdf" target="_blank" class="cert-link">
-                                <div class="glass-card cert-card">
-                                    <div class="cert-icon">🎉</div>
-                                    <h4>Advent Event</h4>
-                                    <span class="cert-action">View PDF &rarr;</span>
-                                </div>
-                            </a>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Six_Sigma_White_Belt.pdf', 'Six Sigma White Belt')">
+                                <div class="cert-icon">📜</div>
+                                <h4>Six Sigma White Belt</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Coursera_Business_Analysis.pdf', 'Business Analysis')">
+                                <div class="cert-icon">📊</div>
+                                <h4>Business Analysis</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Bloomberg.pdf', 'Bloomberg Concepts')">
+                                <div class="cert-icon">💹</div>
+                                <h4>Bloomberg Concepts</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Canva.pdf', 'Canva Graphic Design')">
+                                <div class="cert-icon">🎨</div>
+                                <h4>Canva Graphic Design</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('IIT_Kharagpur.pdf', 'IIT Kharagpur Workshop')">
+                                <div class="cert-icon">🏛️</div>
+                                <h4>IIT Kharagpur Workshop</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Inventory_Management.pdf', 'Inventory Management')">
+                                <div class="cert-icon">📦</div>
+                                <h4>Inventory Management</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Procurement_Management.pdf', 'Procurement Management')">
+                                <div class="cert-icon">🔗</div>
+                                <h4>Procurement Management</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('MS_Excel_Beginning.pdf', 'MS Excel Basics')">
+                                <div class="cert-icon">📗</div>
+                                <h4>MS Excel Basics</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('MA_Excel.pdf', 'Advanced MS Excel')">
+                                <div class="cert-icon">📘</div>
+                                <h4>Advanced MS Excel</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Supply_Chain_Conclave.pdf', 'Supply Chain Conclave')">
+                                <div class="cert-icon">🚛</div>
+                                <h4>Supply Chain Conclave</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Case_study_ssc_club.pdf', 'SSC Club Case Study')">
+                                <div class="cert-icon">📝</div>
+                                <h4>SSC Club Case Study</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('Verbinden.pdf', 'Verbinden Volunteer')">
+                                <div class="cert-icon">🤝</div>
+                                <h4>Verbinden Volunteer</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
+                            <div class="cert-card glass-card" onclick="openCertificate('advent_event.pdf', 'Advent Event')">
+                                <div class="cert-icon">🎉</div>
+                                <h4>Advent Event</h4>
+                                <span class="cert-action">View PDF &rarr;</span>
+                            </div>
+
                         </div>
                     </div>
                 </div>
