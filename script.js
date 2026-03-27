@@ -1,43 +1,133 @@
-// Add scroll event listener for navbar
-const navbar = document.querySelector('.navbar');
+/**
+ * Khushi Thakkar - E-Portfolio Script
+ * Handles: Navbar scroll, reveal animations, mobile menu
+ */
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+document.addEventListener("DOMContentLoaded", function () {
 
-// Intersection Observer for scroll animations
-const revealElements = document.querySelectorAll('.reveal');
+    // ===== 1. NAVBAR SCROLL EFFECT =====
+    var navbar = document.getElementById("navbar");
 
-const revealOptions = {
-    threshold: 0.15,
-    rootMargin: "0px 0px -50px 0px"
-};
-
-const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting) {
-            return;
+    function handleScroll() {
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
         } else {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
+            navbar.classList.remove("scrolled");
+        }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    // Run once on load in case page is already scrolled
+    handleScroll();
+
+
+    // ===== 2. REVEAL ON SCROLL ANIMATION =====
+    var revealElements = document.querySelectorAll(".reveal");
+
+    // Check if IntersectionObserver is supported
+    if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -30px 0px"
+        });
+
+        revealElements.forEach(function (el) {
+            observer.observe(el);
+        });
+    } else {
+        // Fallback: if IntersectionObserver not supported, show everything
+        revealElements.forEach(function (el) {
+            el.classList.add("active");
+        });
+    }
+
+    // Make hero visible immediately with a slight delay for entrance effect
+    var hero = document.getElementById("hero");
+    if (hero) {
+        setTimeout(function () {
+            hero.classList.add("active");
+        }, 150);
+    }
+
+
+    // ===== 3. MOBILE HAMBURGER MENU =====
+    var hamburger = document.getElementById("hamburger");
+    var navLinks = document.getElementById("navLinks");
+    var overlay = document.getElementById("mobileMenuOverlay");
+
+    function openMenu() {
+        hamburger.classList.add("active");
+        navLinks.classList.add("active");
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+        hamburger.classList.remove("active");
+        navLinks.classList.remove("active");
+        overlay.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    if (hamburger) {
+        hamburger.addEventListener("click", function () {
+            if (navLinks.classList.contains("active")) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+    }
+
+    // Close menu when a nav link is clicked
+    var allNavLinks = document.querySelectorAll(".nav-link");
+    allNavLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+            closeMenu();
+        });
+    });
+
+    // Close menu when overlay is clicked
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            closeMenu();
+        });
+    }
+
+    // Close menu on Escape key
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeMenu();
         }
     });
-}, revealOptions);
 
-revealElements.forEach(el => {
-    revealOnScroll.observe(el);
-});
 
-// Add immediate active class to hero section on load
-document.addEventListener("DOMContentLoaded", () => {
-    const hero = document.getElementById('hero');
-    if(hero) {
-        setTimeout(() => {
-            hero.classList.add('active');
-        }, 100);
-    }
+    // ===== 4. SMOOTH SCROLL FOR ANCHOR LINKS =====
+    var anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            var targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            var targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                e.preventDefault();
+                var navHeight = navbar.offsetHeight;
+                var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+
 });
