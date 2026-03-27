@@ -303,6 +303,12 @@ p {
     cursor: pointer;
     font-size: 1rem;
     text-align: center;
+    border: none;
+}
+
+.btn-sm {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
 }
 
 .btn-primary {
@@ -527,11 +533,6 @@ p {
     margin-top: 1rem;
 }
 
-.cert-link {
-    text-decoration: none;
-    display: block;
-}
-
 .cert-card {
     padding: 1.5rem;
     text-align: center;
@@ -543,6 +544,17 @@ p {
     align-items: center;
     gap: 0.5rem;
     min-height: 140px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cert-card:hover {
+    border-color: var(--accent-2);
+    background: var(--bg-surface-hover);
+}
+
+.cert-card:hover .cert-action {
+    color: var(--accent-1);
 }
 
 .cert-icon {
@@ -560,6 +572,137 @@ p {
     color: var(--accent-2);
     font-size: 0.85rem;
     font-weight: 600;
+    transition: var(--transition);
+}
+
+/* ===== PDF MODAL ===== */
+.pdf-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.pdf-modal.active {
+    display: flex;
+}
+
+.pdf-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.pdf-modal-content {
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 900px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.pdf-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-base);
+}
+
+.pdf-modal-header h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.pdf-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.pdf-modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--text-secondary);
+    line-height: 1;
+}
+
+.pdf-modal-close:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+.pdf-modal-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.pdf-modal-body iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.pdf-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    height: 100%;
+    padding: 3rem;
+    text-align: center;
+}
+
+.pdf-fallback-icon {
+    font-size: 4rem;
+}
+
+.pdf-fallback p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 400px;
 }
 
 /* ===== CONTACT ===== */
@@ -734,6 +877,25 @@ footer {
     .footer-links {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    /* PDF Modal mobile */
+    .pdf-modal {
+        padding: 0.5rem;
+    }
+
+    .pdf-modal-content {
+        height: 95vh;
+        border-radius: 12px;
+    }
+
+    .pdf-modal-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .pdf-modal-header h3 {
+        font-size: 0.95rem;
     }
 }
 
